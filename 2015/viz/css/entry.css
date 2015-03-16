@@ -75,12 +75,14 @@ body {
     font-size: 12px;
 }
 
+/* Use this to place it in the upper right corner of the viewport.
 #champ-points-container {
     position: absolute;
     top: 0;
     right: 0;
     margin: 10px;
 }
+*/
 
 #champ-points-container label {
     font-family: sans-serif;
