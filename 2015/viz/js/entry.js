@@ -220,11 +220,19 @@ function buildBracketCode(teamsCode, pointsCode) {
 }
 
 function parseBracketCode(bracketCode) {
-    var parts = bracketCode.split("#");
-    return {
-        "teams": parts[0],
-        "points": parts[1]
-    };    
+    var parts = bracketCode.split('#');
+    if (parts.length >= 2) {
+        return {
+            "teams": parts[0],
+            "points": parts[1]
+        };
+    }
+    else {
+        return {
+            "teams": parts[0],
+            "points": null
+        };
+    }
 }
 
 // This assumes 9 or fewer rounds.
@@ -246,9 +254,22 @@ function refreshBracketTeamsCode() {
 }
 
 function applyBracketCode() {
-    var bracketCodes = parseBracketCode(codeInput.property("value"));
-    bracketTeamsCode = bracketCodes["teams"];
-    bracketPointsCode = bracketCodes["points"];
+    var bracketCodeParts = parseBracketCode(codeInput.property("value"));
+
+    var rawBracketTeamsCode = bracketCodeParts["teams"];
+    var rawBracketPointsCode = bracketCodeParts["points"];
+
+    if (rawBracketTeamsCode.length !== teams.length) {
+        alert("Invalid bracket code: Incorrect number of characters.");
+        return;
+    }
+    if (rawBracketPointsCode === null || rawBracketPointsCode === "") {
+        alert("Invalid bracket code: Missing point total.");
+        return;
+    }
+
+    bracketTeamsCode = rawBracketTeamsCode;
+    bracketPointsCode = rawBracketPointsCode;
 
     var teamCounts = bracketTeamsCode.split('');
 
