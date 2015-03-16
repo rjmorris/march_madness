@@ -375,9 +375,9 @@ d3.json("data/entry.json", function(error, inputBracket) {
     teamBoxes
         .append("text")
         .classed("team-text", true)
-        .attr("x", xScale.rangeBand() / 2)
+        .attr("x", "0.25em")
         .attr("y", function(d) { return d.value * yScale.rangeBand() / 2; })
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", "start")
         .style("dominant-baseline", "middle")
         .text(function(d) { return d.team; })
     ;
