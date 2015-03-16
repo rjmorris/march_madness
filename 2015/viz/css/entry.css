@@ -45,7 +45,7 @@ body {
 }
 
 .team-text {
-    font-family: sans-serif;
+    font-family: arial, sans-serif;
     font-size: 10px;
     fill: #073642;
     pointer-events: none;
