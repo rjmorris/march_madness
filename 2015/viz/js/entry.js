@@ -366,7 +366,7 @@ function refreshStatusMessage() {
     }
 
     if (statusErrorLevel === "good") {
-        statusMessages.push("Your bracket is complete!");
+        statusMessages.push("Your bracket is complete! Submit it by sending the bracket code to Joey.");
     }
 
     statusMessageField.text(statusMessages.join(' '));
