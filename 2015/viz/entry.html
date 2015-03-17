@@ -7,6 +7,9 @@
         <script type="text/javascript" src="js/d3-3.4.13/d3.min.js"></script>
     </head>
     <body>
+        <div id="status-container">
+            <p>Status: <span id="status-message"></span></p>
+        </div>
         <div id="bracket-code-container">
             <label for="bracket-code">Bracket code:</label>
             <input type="text" id="bracket-code" />
@@ -14,7 +17,7 @@
         </div>
         <div id="champ-points-container">
             <label for="champ-points">Predicted points in championship game:</label>
-            <input type="text" id="champ-points" size="5" value="0" />
+            <input type="text" id="champ-points" size="5" />
         </div>
         <div id="bracket"></div>
         <script type="text/javascript" src="js/entry.js"></script>

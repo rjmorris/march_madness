@@ -20,6 +20,8 @@ var pointsInput = d3.select("#champ-points")
     .on("keyup", refreshBracketPointsCode)
 ;
 
+var statusMessageField = d3.select("#status-message");
+
 var depthValues = {
     4: {
         4: 1,
@@ -52,6 +54,12 @@ var depthValues = {
         1: 21
     }
 };
+
+function formatUnits(count, units) {
+    if (count === 0)      return count + ' ' + units['zero'];
+    else if (count === 1) return count + ' ' + units['one'];
+    else                  return count + ' ' + units['many'];
+}
 
 var xScale = d3.scale.ordinal()
     .rangeBands([width, 0], 0.2, 0)
@@ -251,6 +259,8 @@ function refreshBracketTeamsCode() {
     bracketTeamsCode = countString.join('');
 
     codeInput.property("value", buildBracketCode(bracketTeamsCode, bracketPointsCode));
+
+    refreshStatusMessage();
 }
 
 function applyBracketCode() {
@@ -297,6 +307,7 @@ function applyBracketCode() {
     });
 
     refreshBoxContent();
+    refreshStatusMessage();
 
     pointsInput.property("value", bracketPointsCode);
 }
@@ -304,6 +315,39 @@ function applyBracketCode() {
 function refreshBracketPointsCode() {
     bracketPointsCode = pointsInput.property("value");
     codeInput.property("value", buildBracketCode(bracketTeamsCode, bracketPointsCode));
+
+    refreshStatusMessage();
+}
+
+function refreshStatusMessage() {
+    var statusMessages = [];
+    var statusErrorLevel = "good";
+
+    var expectedPickCount = teams.length - 1;
+    var actualPickCount = d3.sum(bracketTeamsCode.split(''));
+    var missingPickCount = expectedPickCount - actualPickCount;
+
+    if (missingPickCount > 0) {
+        statusMessages.push("Missing " + formatUnits(missingPickCount, { zero: "picks", one: "pick", many: "picks" }) + ".");
+        statusErrorLevel = "error";
+    }
+
+    var predictedPoints = parseInt(bracketPointsCode, 10);
+    if (predictedPoints === 0 || isNaN(predictedPoints)) {
+        statusMessages.push("Missing predicted points in championship game.");
+        statusErrorLevel = "error";
+    }
+    else if (predictedPoints < 90) {
+        statusMessages.push("Surprisingly low predicted points in championship game (should be sum of both teams' scores).");
+        if (statusErrorLevel !== "error") statusErrorLevel = "warning";
+    }
+
+    if (statusErrorLevel === "good") {
+        statusMessages.push("Your bracket is complete!");
+    }
+
+    statusMessageField.text(statusMessages.join(' '));
+    statusMessageField.attr("class", statusErrorLevel);
 }
 
 
@@ -314,6 +358,10 @@ d3.json("data/entry.json", function(error, inputBracket) {
 
     codeInput.attr("size", teams.length + 8);
     refreshBracketTeamsCode();
+
+    pointsInput.property("value", bracketPointsCode);
+
+    refreshStatusMessage();
 
     flatBracket.map(function(node) {
         node.value = depthValues[numRounds][node.depth];
