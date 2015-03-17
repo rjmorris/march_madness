@@ -1,5 +1,5 @@
-var margin = {top: 10, right: 2, bottom: 2, left: 2};
-var width = 1000 - margin.left - margin.right;
+var margin = {top: 10, right: 2, bottom: 2, left: 12};
+var width = 1010 - margin.left - margin.right;
 var height = 900 - margin.top - margin.bottom;
 
 var svg = d3.select("#bracket")
@@ -69,6 +69,16 @@ var yScale = d3.scale.ordinal()
     .rangeBands([0, height], 0.1, 0)
 ;
 
+var regionColor = d3.scale.ordinal()
+    .range([
+        "#6c71c4",
+        "#b58900",
+        "#2aa198",
+        "#d33682"
+    ])
+;
+
+
 // Create the diagonal function for drawing the connectors between team boxes.
 // We have to swap all the x and y values here to make the connectors look
 // right. See http://stackoverflow.com/questions/15007877/how-to-use-the-d3-diagonal-function-to-draw-curved-lines.
@@ -95,6 +105,7 @@ var flatBracket = [];
 var teams = [];
 var numTeams = 0;
 var numRounds = 0;
+var regions = Object.create(null);  // Implement a Set using a blank Object.
 
 function createTreeBracket(bracket, nodeId, parent) {
     var node = {};
@@ -106,6 +117,13 @@ function createTreeBracket(bracket, nodeId, parent) {
     }
     else {
         node.team = "";
+    }
+
+    if ('region' in bracket[nodeId]) {
+        node.region = bracket[nodeId].region;
+    }
+    else {
+        node.region = null;
     }
 
     if ('children' in bracket[nodeId]) {
@@ -123,6 +141,7 @@ function createTreeBracket(bracket, nodeId, parent) {
 
 function assignBracketDimensions(node, currentDepth) {
     node.depth = currentDepth;
+
     if (node.children === null) {
         // This is a leaf node.
         teams.push(node.team);
@@ -135,6 +154,10 @@ function assignBracketDimensions(node, currentDepth) {
         node.breadth = d3.mean(node.children, function(child) {
             return child.breadth;
         });
+    }
+
+    if (node.region !== null) {
+        regions[node.region] = true;
     }
 
     numRounds = Math.max(numRounds, node.depth);
@@ -371,6 +394,7 @@ d3.json("data/entry.json", function(error, inputBracket) {
 
     xScale.domain(d3.range(1, numRounds + 1));
     yScale.domain(d3.range(1, teams.length + 1));
+    regionColor.domain(d3.keys(regions));
 
     svg.selectAll(".link")
         .data(flatBracket)
@@ -438,6 +462,32 @@ d3.json("data/entry.json", function(error, inputBracket) {
             d.hovering = false;
             unsetParentsPending(d);
             restyleHoverPending();
+        })
+    ;
+
+    teamBoxes
+        .filter(function(d) { return d.children === null; })
+        .append("rect")
+        .attr("x", -10)
+        .attr("width", 8)
+        .attr("height", function(d) { return d.value * yScale.rangeBand(); })
+        .attr("fill", function(d, i) {
+            // Color the boxes based on the region. Use this method to give all
+            // the boxes in the region a uniform color:
+            //
+            //     return regionColor(d.region);
+            //
+            // Use this method to alternate between the assigned color and a
+            // lighter version:
+            //
+            //     if (i % 2 === 0) return regionColor(d.region);
+            //     else return d3.rgb(regionColor(d.region)).brighter();
+            //
+            // Use this method to alternate between the assigned color and a
+            // lighter version for every pair of teams:
+            //
+            if (Math.floor(i/2) % 2 === 0) return regionColor(d.region);
+            else return d3.rgb(regionColor(d.region)).brighter();
         })
     ;
 
