@@ -1,0 +1,74 @@
+/*
+Using colors from the Solarized palette.
+-- background tones --
+$base03:    #002b36;
+$base02:    #073642;
+-- content tones --
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+-- background tones --
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+-- accent colors --
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+*/
+
+body {
+    margin: 10px;
+    background-color: #eee8d5;
+}
+
+#header {
+    font-family: arial, sans-serif;
+    font-size: 12px;
+}
+
+#header p {
+    margin: 0px;
+    padding: 0px;
+}
+
+#player-name {
+    font-size: 14px;
+}
+
+.team-rect {
+    fill: #fdf6e3;
+    shape-rendering: crispEdges;
+    cursor: default;
+}
+
+.team-rect.incomplete {
+    stroke: #dc322f;
+}
+
+.hovering .team-rect {
+    stroke: #268bd2;
+}
+
+.team-text {
+    font-family: arial, sans-serif;
+    font-size: 10px;
+    fill: #073642;
+    pointer-events: none;
+}
+
+.link {
+    stroke: #93a1a1;
+    stroke-width: 1px;
+    fill: none;
+}
+
+#bracket-code {
+    font-family: monospace;
+    font-size: 12px;
+}
