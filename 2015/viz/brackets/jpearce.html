@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>March Madness Bracket Viewer</title>
+        <link rel="stylesheet" type="text/css" href="../css/viewer.css">
+        <script type="text/javascript" src="../js/d3-3.4.13/d3.min.js"></script>
+    </head>
+    <body>
+        <div id="header">
+            <p><span id="player-name"></span></p>
+            <p>Bracket code: <span id="bracket-code"></span></p>
+        </div>
+        <div id="bracket"></div>
+        <script type="text/javascript" src="../js/viewer.js"></script>
+        <script type="text/javascript">
+         createBracket({
+             name: "John Pearce",
+             code: "4010200110302010300101200210016040102010301020103010010210500120#133"
+         });
+        </script>
+    </body>
+</html>
