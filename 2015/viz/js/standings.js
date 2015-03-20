@@ -2,7 +2,7 @@ var margin = {
     top: 50,
     right: 150,
     bottom: 50,
-    left: 100
+    left: 110
 };
 var width = 950 - margin.left - margin.right;
 var height = 850 - margin.top - margin.bottom;
