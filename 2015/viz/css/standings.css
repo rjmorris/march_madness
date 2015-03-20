@@ -30,8 +30,10 @@ body {
 }
 
 h1 {
+    width: 950px;
     font-size: 16px;
     color: #002b36;
+    text-align: center;
 }
 
 .axis path,
