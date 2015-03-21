@@ -41,24 +41,29 @@ var yAxis = d3.svg.axis()
     .orient("left")
 ;
 
+var sorter = {
+    'Round of 32': 'sort_cumul32',
+    'Sweet 16 (best case)': 'sort_cumul_best16',
+    'Elite 8 (best case)': 'sort_cumul_best8',
+    'Final 4 (best case)': 'sort_cumul_best4',
+    'Final (best case)': 'sort_cumul_best2',
+    'Champion (best case)': 'sort_cumul_best1'
+};
+
+
 var data;
 
 d3.csv("data/standings.csv", function(error, inputData) {
     data = inputData;
 
-    color.domain([
-        'Round of 32',
-        'Sweet 16 (best case)',
-        'Elite 8 (best case)',
-        'Final 4 (best case)',
-        'Final (best case)',
-        'Champion (best case)'
-    ]);
+    color.domain(d3.keys(sorter));
 
     data.forEach(function(d) {
-        d['rank_all'] = +d['rank_all'];
+        d3.values(sorter).forEach(function(v) {
+            d[v] = +d[v];
+        });
 
-        d['Round of 32'] = +d['score32'];
+        d['Round of 32'] = +d['cumul_score32'];
         d['Sweet 16 (best case)'] = +d['cumul_best_score16'];
         d['Elite 8 (best case)'] = +d['cumul_best_score8'];
         d['Final 4 (best case)'] = +d['cumul_best_score4'];
@@ -77,7 +82,9 @@ d3.csv("data/standings.csv", function(error, inputData) {
         });
     });
 
-    data.sort(function(a, b) { return d3.descending(a['rank_all'], b['rank_all']); });
+    data.sort(function(a, b) {
+        return d3.descending(a[sorter['Round of 32']], b[sorter['Round of 32']]);
+    });
 
     x.domain([0, 219]).nice();
     y.domain(data.map(function(d) { return d.name; }));
@@ -146,12 +153,14 @@ d3.csv("data/standings.csv", function(error, inputData) {
         .on("click", function(d) {
             var yNew = y.domain(
                 data.sort(function(a, b) {
-                    return d3.ascending(a[d], b[d]);
+                    return d3.descending(a[sorter[d]], b[sorter[d]]);
                 }).map(function(d) { return d.name; })
             ).copy();
 
             svg.selectAll(".bar-group")
-                .sort(function(a, b) { return d3.ascending(yNew(a[d]), yNew(b[d])); })
+                .sort(function(a, b) {
+                    return d3.descending(yNew(a[sorter[d]]), yNew(b[sorter[d]]));
+                })
                 .attr("transform", function(d) {
                     return "translate(0," + yNew(d.name) + ")";    
                 })
