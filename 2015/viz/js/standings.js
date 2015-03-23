@@ -77,6 +77,25 @@ var colorsUnplayed = [
     "#dbdbdb"
 ];
 
+
+var highlightColorsPlayed = [
+    "#e0e7ff",  // brighter(0.2)
+    "#c0caff",  // brighter(0.4)
+    "#9aa8ff",  // brighter(0.6)
+    "#6e7ff8",  // brighter(0.8)
+    "#3a50eb",  // brighter(1.0)
+    "#0020db"   // brighter(1.2)
+];
+
+var highlightColorsUnplayed = [
+    "#aaaaaa",  // brighter(0.40)
+    "#b7b7b7",  // brighter(0.35)
+    "#c3c3c3",  // brighter(0.30)
+    "#cfcfcf",  // brighter(0.25)
+    "#dbdbdb",  // brighter(0.20)
+    "#e7e7e7"   // brighter(0.15)
+];
+
 var svg = d3.select("#standings")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -95,6 +114,10 @@ var y = d3.scale.ordinal()
 
 var color = d3.scale.ordinal()
     .range(colorsPlayed.slice(-currentRound).concat(colorsUnplayed.slice(0, -currentRound)))
+;
+
+var highlightColor = d3.scale.ordinal()
+    .range(highlightColorsPlayed.slice(-currentRound).concat(highlightColorsUnplayed.slice(0, -currentRound)))
 ;
 
 var xAxisTop = d3.svg.axis()
@@ -117,6 +140,7 @@ d3.csv("data/standings.csv", function(error, inputData) {
     data = inputData;
 
     color.domain(roundLabels);
+    highlightColor.domain(roundLabels);
 
     data.forEach(function(d) {
         d3.values(sorter).forEach(function(v) {
@@ -196,6 +220,18 @@ d3.csv("data/standings.csv", function(error, inputData) {
         .attr("height", y.rangeBand())
         .style("fill", function(d) {
             return color(d.round);
+        })
+        .on("mouseover.1", function(d) {
+            d3.select(this)
+                .style("fill", function(d) {
+                    return highlightColor(d.round);
+                })
+        })
+        .on("mouseout.1", function(d) {
+            d3.select(this)
+                .style("fill", function(d) {
+                    return color(d.round);
+                })
         })
     ;
 
