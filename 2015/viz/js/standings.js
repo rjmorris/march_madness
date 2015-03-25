@@ -209,6 +209,15 @@ d3.csv("data/standings.csv", function(error, inputData) {
         .call(yAxis)
     ;
 
+    svg.selectAll(".y.axis .tick text")
+        .classed("unofficial", function(d) {
+            var player = data.filter(function(p) {
+                return p.name === d;
+            });
+            return player[0].flag_unofficial;
+        })
+    ;
+
     var player = svg.selectAll(".player")
         .data(data)
         .enter().append("g")

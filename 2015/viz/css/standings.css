@@ -64,6 +64,7 @@ h1 {
 
 .y.axis text.unofficial {
     fill: #586e75;
+    font-style: italic;
 }
 
 .legend {
