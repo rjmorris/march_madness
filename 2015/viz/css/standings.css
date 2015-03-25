@@ -75,3 +75,34 @@ h1 {
     font-family: arial, sans-serif;
     fill: #586e75;
 }
+
+.bar-tip {
+  padding: 6px;
+  line-height: 1.5;
+  font-size: 10px;
+  background: #ffffff;
+  color: #002b36;
+  border: solid 1px #002b36;
+  pointer-events: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.bar-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Northward tooltips */
+.bar-tip.n:after {
+  content: "\25BC";
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  text-align: center;
+}

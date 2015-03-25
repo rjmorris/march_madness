@@ -134,6 +134,17 @@ var yAxis = d3.svg.axis()
     .orient("left")
 ;
 
+var barTip = d3.tip()
+    .attr("class", "d3-tip bar-tip")
+    .direction("n")
+    .offset([-5, 0])  // to make room for the arrow
+    .html(function(d) {
+        return d.round + ": " + (d.x1 - d.x0) + "<br>" + "Cumulative: " + d.x1 ;
+    });
+
+svg.call(barTip);
+
+
 var data;
 
 d3.csv("data/standings.csv", function(error, inputData) {
@@ -227,11 +238,17 @@ d3.csv("data/standings.csv", function(error, inputData) {
                     return highlightColor(d.round);
                 })
         })
+        .on("mouseover.2", function(d) {
+            barTip.show(d);
+        })
         .on("mouseout.1", function(d) {
             d3.select(this)
                 .style("fill", function(d) {
                     return color(d.round);
                 })
+        })
+        .on("mouseout.2", function(d) {
+            barTip.hide(d);
         })
     ;
 
