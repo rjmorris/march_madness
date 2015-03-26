@@ -1,7 +1,7 @@
 var margin = {
-    top: 50,
+    top: 40,
     right: 150,
-    bottom: 50,
+    bottom: 40,
     left: 110
 };
 var width = 950 - margin.left - margin.right;
@@ -199,7 +199,7 @@ d3.csv("data/standings.csv", function(error, inputData) {
         .append("text")
         .attr("x", width/2)
         .attr("y", 0)
-        .attr("dy", "-3em")
+        .attr("dy", "-2.25em")
         .style("text-anchor", "middle")
         .text("Score")
     ;
