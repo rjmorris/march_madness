@@ -59,7 +59,7 @@ h1 {
 
 .y.axis text {
     cursor: pointer;
-    fill: #002b36;
+    fill: #000000;
 }
 
 .y.axis text.unofficial {
