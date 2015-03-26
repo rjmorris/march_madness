@@ -58,7 +58,7 @@ h1 {
 }
 
 .y.axis text {
-    cursor: default;
+    cursor: pointer;
     fill: #002b36;
 }
 

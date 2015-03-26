@@ -132,7 +132,6 @@ var barTip = d3.tip()
 
 svg.call(barTip);
 
-
 var data;
 
 var q = queue()
@@ -229,6 +228,7 @@ q.await(function(error, standingsData, keyData) {
             return player[0].flag_unofficial;
         })
     ;
+    addBracketLinks();
 
     var player = svg.selectAll(".player")
         .data(data)
@@ -313,6 +313,7 @@ q.await(function(error, standingsData, keyData) {
             d3.select(".y.axis")
                 .call(yAxis)
             ;
+            addBracketLinks();
         })
     ;
 
@@ -332,4 +333,18 @@ q.await(function(error, standingsData, keyData) {
             return d;
         })
     ;
+
+    function addBracketLinks() {
+        svg.selectAll(".y.axis .tick text")
+            .text("")
+            .append("a")
+            .attr("xlink:href", function(d) {
+                var player = data.filter(function(p) {
+                    return p.name === d;
+                });
+                return "brackets/" + player[0].userid + ".html";
+            })
+            .text(function(d) { return d; })
+        ;
+    }
 });
