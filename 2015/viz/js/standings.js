@@ -132,7 +132,6 @@ var barTip = d3.tip()
 
 svg.call(barTip);
 
-
 var data;
 
 var q = queue()
@@ -229,6 +228,7 @@ q.await(function(error, standingsData, keyData) {
             return player[0].flag_unofficial;
         })
     ;
+    addBracketLinks();
 
     var player = svg.selectAll(".player")
         .data(data)
@@ -273,12 +273,26 @@ q.await(function(error, standingsData, keyData) {
         })
     ;
 
-    var legend = svg.selectAll(".legend")
+    var legendGroup = svg.append("g")
+        .attr("class", "legend-group")
+        .attr("transform", function(d, i) {
+            return "translate(" + (width + 20) + ",50)";
+        })
+    ;
+
+    legendGroup.append('text')
+        .attr("id", "legend-title")
+        .attr("x", 0)
+        .attr("y", -10)
+        .text("Sort by:")
+    ;
+
+    var legendItems = legendGroup.selectAll(".legend-item")
         .data(color.domain())
         .enter().append("g")
-        .attr("class", "legend")
+        .attr("class", "legend-item")
         .attr("transform", function(d, i) {
-            return "translate(" + (width + 20) + "," + (50 + i * 20) + ")";
+            return "translate(0," + (i * 20) + ")";
         })
         .on("click", function(d) {
             var yNew = y.domain(
@@ -299,17 +313,18 @@ q.await(function(error, standingsData, keyData) {
             d3.select(".y.axis")
                 .call(yAxis)
             ;
+            addBracketLinks();
         })
     ;
 
-    legend.append("rect")
+    legendItems.append("rect")
         .attr("x", 0)
         .attr("width", 18)
         .attr("height", 18)
         .style("fill", color)
     ;
 
-    legend.append("text")
+    legendItems.append("text")
         .attr("x", 25)
         .attr("y", 9)
         .attr("dy", ".35em")
@@ -318,4 +333,18 @@ q.await(function(error, standingsData, keyData) {
             return d;
         })
     ;
+
+    function addBracketLinks() {
+        svg.selectAll(".y.axis .tick text")
+            .text("")
+            .append("a")
+            .attr("xlink:href", function(d) {
+                var player = data.filter(function(p) {
+                    return p.name === d;
+                });
+                return "brackets/" + player[0].userid + ".html";
+            })
+            .text(function(d) { return d; })
+        ;
+    }
 });

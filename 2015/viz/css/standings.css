@@ -58,8 +58,8 @@ h1 {
 }
 
 .y.axis text {
-    cursor: default;
-    fill: #002b36;
+    cursor: pointer;
+    fill: #000000;
 }
 
 .y.axis text.unofficial {
@@ -67,14 +67,22 @@ h1 {
     font-style: italic;
 }
 
-.legend {
+.legend text {
+    font-family: arial, sans-serif;
+    fill: #586e75;
+}
+
+#legend-title {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.legend-item {
     cursor: pointer;
 }
 
-.legend text {
+.legend-item text {
     font-size: 10px;
-    font-family: arial, sans-serif;
-    fill: #586e75;
 }
 
 .bar-tip {
