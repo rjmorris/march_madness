@@ -7,8 +7,6 @@ var margin = {
 var width = 950 - margin.left - margin.right;
 var height = 850 - margin.top - margin.bottom;
 
-var currentRound = 2;
-
 var roundLabelsPlayed = [
     'Round of 32',
     'Sweet 16',
@@ -26,8 +24,6 @@ var roundLabelsUnplayed = [
     'Final (best case)',
     'Champion (best case)'
 ];
-
-var roundLabels = roundLabelsPlayed.slice(0, currentRound).concat(roundLabelsUnplayed.slice(currentRound));
 
 var sorter = {
     'Round of 32 (best case)': 'sort_cumul_best32',
@@ -112,14 +108,6 @@ var y = d3.scale.ordinal()
     .rangeRoundBands([height, 0], .4)
 ;
 
-var color = d3.scale.ordinal()
-    .range(colorsPlayed.slice(-currentRound).concat(colorsUnplayed.slice(0, -currentRound)))
-;
-
-var highlightColor = d3.scale.ordinal()
-    .range(highlightColorsPlayed.slice(-currentRound).concat(highlightColorsUnplayed.slice(0, -currentRound)))
-;
-
 var xAxisTop = d3.svg.axis()
     .scale(x)
     .orient("top")
@@ -147,11 +135,35 @@ svg.call(barTip);
 
 var data;
 
-d3.csv("data/standings.csv", function(error, inputData) {
-    data = inputData;
+var q = queue()
+    .defer(d3.csv, "data/standings.csv")
+    .defer(d3.csv, "data/bracket_code_key.csv")
+;
 
-    color.domain(roundLabels);
-    highlightColor.domain(roundLabels);
+q.await(function(error, standingsData, keyData) {
+    // Determine the current round from the keyData. It is the maximum value in
+    // the bracket code, that is, the maximum number of wins by any team in the
+    // tournament so far.
+    var currentRound = d3.max(keyData[0]['code'].split(''), function(d) { return +d; });
+
+    // Use the currentRound to construct various round-specific attributes.
+    // These will be a mix of the values for the rounds that have been played
+    // and the rounds that haven't yet been played.
+    var roundLabels = roundLabelsPlayed.slice(0, currentRound).concat(roundLabelsUnplayed.slice(currentRound));
+    var roundColors = colorsPlayed.slice(-currentRound).concat(colorsUnplayed.slice(0, -currentRound));
+    var roundHighlightColors = highlightColorsPlayed.slice(-currentRound).concat(highlightColorsUnplayed.slice(0, -currentRound));
+
+    var color = d3.scale.ordinal()
+        .domain(roundLabels)
+        .range(roundColors)
+    ;
+
+    var highlightColor = d3.scale.ordinal()
+        .domain(roundLabels)
+        .range(roundHighlightColors)
+    ;
+
+    data = standingsData;
 
     data.forEach(function(d) {
         d3.values(sorter).forEach(function(v) {
