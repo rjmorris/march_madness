@@ -70,26 +70,25 @@ var regionColor = d3.scale.ordinal()
 ;
 
 
-// Create the diagonal function for drawing the connectors between team boxes.
-// We have to swap all the x and y values here to make the connectors look
-// right. See http://stackoverflow.com/questions/15007877/how-to-use-the-d3-diagonal-function-to-draw-curved-lines.
-var diagonal = d3.svg.diagonal()
-    .source(function(d) {
-        return {
-            y: xScale(d.depth) + xScale.rangeBand(),
-            x: yScaleCenter(d.breadth)
-        };
-    })
-    .target(function(d) {
-        return {
-            y: xScale(d.parent.depth),
-            x: yScaleCenter(d.parent.breadth)
-        };
-    })
-    .projection(function(d) {
-        return [d.y, d.x];
-    })
-;
+// Create a function for drawing the connectors between team boxes. Use an SVG
+// Path to draw a series of lines:
+//
+//   1. Move to the center of the right edge of the box.
+//   2. Draw a horizontal line halfway to the parent box.
+//   3. Draw a vertical line up or down to the center of the parent box.
+//   4. Draw a horizontal line the rest of the way to the parent box.
+//
+// Note that the line in #4 will be repeated by the two children of each parent.
+
+var connector = function(d) {
+    var path = "";
+    path += "M" + (xScale(d.depth) + xScale.rangeBand()) + "," + yScaleCenter(d.breadth);
+    path += "H" + (xScale(d.depth) + xScale.rangeBand() + xScale(d.parent.depth))/2;
+    path += "V" + yScaleCenter(d.parent.breadth);
+    path += "H" + xScale(d.parent.depth);
+    return path;
+}
+
 
 var treeBracket = {};
 var flatBracket = [];
@@ -357,12 +356,11 @@ function createBracket(options) {
         regionColor.domain(d3.keys(regions));
 
         svg.selectAll(".link")
-            .data(flatBracket)
+            .data(flatBracket.filter(function(d) { return d.parent !== null; }))
             .enter()
             .append("path")
-            .filter(function(d) { return d.parent !== null; })
             .classed("link", true)
-            .attr("d", function(d) { return diagonal(d); })
+            .attr("d", function(d) { return connector(d); })
         ;
 
         var teamBoxes = svg.selectAll(".team-box")
