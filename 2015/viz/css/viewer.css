@@ -51,6 +51,15 @@ body {
     stroke: #dc322f;
 }
 
+.team-box.right text {
+    fill: #007700;
+}
+
+.team-box.wrong text {
+    fill: #aaaaaa;
+    text-decoration: line-through;
+}
+
 .hovering .team-rect {
     stroke: #268bd2;
 }

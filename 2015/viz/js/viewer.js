@@ -253,20 +253,91 @@ function applyBracketCode(code) {
     });
 
     bracketCodeElement.text(code);
-    refreshBoxContent();
 }
 
-function refreshBoxContent() {
-    d3.selectAll(".team-text")
-        .text(function(d) { return d.team; })
-    ;
-    d3.selectAll(".team-rect")
-        .classed("incomplete", function(d) { return d.team === ""; })
-    ;
+// Use the key's bracket code to mark all the games as right, wrong, or
+// unplayed. We'll add an attribute named right to the bound data. right=true
+// means the pick was right, right=false means the pick was wrong, and
+// right=null means the game is unplayed.
+
+function applyKeyBracketCode(code) {
+    var bracketCodeParts = parseBracketCode(code);
+    var teamsCode = bracketCodeParts["teams"];
+
+    if (teamsCode.length !== teams.length) {
+        alert("Invalid key bracket code: Incorrect number of characters.");
+        return;
+    }
+
+    var teamCounts = teamsCode.split('');
+
+    // Add the attribute to all the nodes that represent picks, and initialize
+    // it to null.
+
+    flatBracket.filter(function(node) {
+        return node.children !== null;
+    }).forEach(function(node) {
+        node.right = null;
+    });
+
+    // The key's bracket code tells us how many games each team has won. For
+    // each leaf node (team), step through the number of games the team should
+    // have won and verify that the predicted bracket matches that team.
+
+    flatBracket.filter(function(node) {
+        return node.children === null;
+    }).forEach(function(node) {
+        var team = node.team;
+        var count = teamCounts[teams.indexOf(team)];
+        var parent = node.parent;
+
+        while (count > 0) {
+            if (parent === null) {
+                alert("Invalid key bracket code!");
+                return;
+            }
+
+            checkRight(parent, team);
+            parent = parent.parent;
+            count--;
+        }
+    });
+}
+
+// Check whether the node represents a correct pick. Mark it right if so and
+// wrong if not. If wrong, mark all later appearances of the team as wrong.
+
+function checkRight(node, team) {
+    if (node.team === team) {
+        node.right = true;
+    }
+    else {
+        node.right = false;
+        propagateWrong(node.parent, node.team);
+    }
+}
+
+// Mark the node wrong if it matches the given team. Then pass the same logic on
+// to the parent node (the next round). There is no need to move to the parent
+// node if this node doesn't match the given team, because in that case the
+// given team can't appear anywhere later in the bracket.
+
+function propagateWrong(node, team) {
+    if (node === null) return;
+
+    if (node.team === team) {
+        node.right = false;
+        propagateWrong(node.parent, team);
+    }
 }
 
 function createBracket(options) {
-    d3.json("../data/entry.json", function(error, inputBracket) {
+    var q = queue()
+        .defer(d3.json, "../data/entry.json")
+        .defer(d3.csv, "../data/bracket_code_key.csv")
+    ;
+
+    q.await(function(error, inputBracket, keyData) {
         treeBracket = createTreeBracket(inputBracket, "root", null);
         assignBracketDimensions(treeBracket, 1);
         flattenBracket(treeBracket, flatBracket);
@@ -279,6 +350,7 @@ function createBracket(options) {
 
         playerNameElement.text(options.name);
         applyBracketCode(options.code);
+        applyKeyBracketCode(keyData[0]['code']);
 
         xScale.domain(d3.range(1, numRounds + 1));
         yScale.domain(d3.range(1, teams.length + 1));
@@ -298,6 +370,8 @@ function createBracket(options) {
             .enter()
             .append("g")
             .classed("team-box", true)
+            .classed("right", function(d) { return d.right === true; })
+            .classed("wrong", function(d) { return d.right === false; })
             .attr("transform", function(d) {
                 return "translate(" +
                     xScale(d.depth) +
@@ -361,5 +435,7 @@ function createBracket(options) {
             .style("dominant-baseline", "middle")
             .text(function(d) { return d.team; })
         ;
+
+
     });
 }
