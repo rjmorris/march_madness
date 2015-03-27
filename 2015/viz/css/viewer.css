@@ -60,10 +60,6 @@ body {
     text-decoration: line-through;
 }
 
-.hovering .team-rect {
-    stroke: #268bd2;
-}
-
 .team-text {
     font-family: arial, sans-serif;
     font-size: 10px;
