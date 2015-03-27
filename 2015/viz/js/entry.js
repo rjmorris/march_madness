@@ -217,7 +217,7 @@ function refreshBoxContent() {
     d3.selectAll(".team-text")
         .text(function(d) { return d.team; })
     ;
-    d3.selectAll(".team-rect")
+    d3.selectAll(".team-box")
         .classed("incomplete", function(d) { return d.team === ""; })
         .style("cursor", function(d) {
             if (d.team === "") return "default";
