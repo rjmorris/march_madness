@@ -47,17 +47,8 @@ body {
     cursor: default;
 }
 
-.team-rect.incomplete {
+.incomplete .team-rect {
     stroke: #dc322f;
-}
-
-.team-box.right text {
-    fill: #007700;
-}
-
-.team-box.wrong text {
-    fill: #aaaaaa;
-    text-decoration: line-through;
 }
 
 .team-text {
@@ -65,6 +56,15 @@ body {
     font-size: 10px;
     fill: #073642;
     pointer-events: none;
+}
+
+.right .team-text {
+    fill: #007700;
+}
+
+.wrong .team-text {
+    fill: #aaaaaa;
+    text-decoration: line-through;
 }
 
 .link {

@@ -35,7 +35,7 @@ body {
     cursor: pointer;
 }
 
-.team-rect.incomplete {
+.incomplete .team-rect {
     stroke: #dc322f;
 }
 

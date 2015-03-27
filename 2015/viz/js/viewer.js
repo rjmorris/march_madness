@@ -369,9 +369,6 @@ function createBracket(options) {
             .data(flatBracket)
             .enter()
             .append("g")
-            .classed("team-box", true)
-            .classed("right", function(d) { return d.right === true; })
-            .classed("wrong", function(d) { return d.right === false; })
             .attr("transform", function(d) {
                 return "translate(" +
                     xScale(d.depth) +
@@ -379,15 +376,10 @@ function createBracket(options) {
                     (yScaleCenter(d.breadth) - (d.value * yScale.rangeBand() / 2)) +
                     ")";
             })
-        ;
-
-        teamBoxes
-            .append("rect")
-            .attr("width", xScale.rangeBand())
-            .attr("height", function(d) { return d.value * yScale.rangeBand(); })
-            .classed("team-rect", true)
+            .classed("team-box", true)
+            .classed("right", function(d) { return d.right === true; })
+            .classed("wrong", function(d) { return d.right === false; })
             .classed("incomplete", function(d) { return d.team === ""; })
-            .classed("highlight", false)
             .on("mouseover", function(d) {
                 if (d.team === "") return;
                 setHovering(d);
@@ -398,6 +390,13 @@ function createBracket(options) {
                 unsetHovering(d);
                 restyleHovering();
             })
+        ;
+
+        teamBoxes
+            .append("rect")
+            .attr("width", xScale.rangeBand())
+            .attr("height", function(d) { return d.value * yScale.rangeBand(); })
+            .classed("team-rect", true)
         ;
 
         teamBoxes
