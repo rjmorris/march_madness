@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>March Madness Contest Entry</title>
+        <link rel="stylesheet" type="text/css" href="css/entry.css">
+        <script type="text/javascript" src="lib/d3-3.4.13/d3.min.js"></script>
+    </head>
+    <body>
+        <div id="status-container">
+            <p>Status: <span id="status-message"></span></p>
+        </div>
+        <div id="bracket-code-container">
+            <label for="bracket-code">Bracket code:</label>
+            <input type="text" id="bracket-code" />
+            <input type="button" id="bracket-code-apply" value="Apply"/>
+        </div>
+        <div id="champ-points-container">
+            <label for="champ-points">Predicted points in championship game:</label>
+            <input type="text" id="champ-points" size="5" />
+        </div>
+        <div id="bracket"></div>
+        <script type="text/javascript" src="js/entry.js"></script>
+    </body>
+</html>

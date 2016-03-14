@@ -1,0 +1,121 @@
+/*
+Using colors from the Solarized palette.
+-- background tones --
+$base03:    #002b36;
+$base02:    #073642;
+-- content tones --
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+-- background tones --
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+-- accent colors --
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+*/
+
+body {
+    margin: 10px;
+    background-color: #eee8d5;
+}
+
+.team-rect {
+    /* stroke: #002b36; */
+    /* stroke-width: 1px; */
+    fill: #fdf6e3;
+    shape-rendering: crispEdges;
+    cursor: pointer;
+}
+
+.incomplete .team-rect {
+    stroke: #dc322f;
+}
+
+.pending .team-rect,
+.hovering .team-rect {
+    stroke: #268bd2;
+}
+
+.team-text {
+    font-family: arial, sans-serif;
+    font-size: 10px;
+    fill: #073642;
+    pointer-events: none;
+}
+
+.pending .team-text {
+    fill: #93a1a1;
+}
+
+.link {
+    stroke: #93a1a1;
+    stroke-width: 1px;
+    fill: none;
+}
+
+.link.pending {
+    stroke: #268bd2;
+}
+
+#status-container {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#status-container p {
+    margin: 0px;
+    margin-bottom: 2px;
+    padding: 0px;
+}
+
+#status-container .error {
+    color: #dc322f;
+    font-weight: bold;
+}
+
+#status-container .warning {
+    color: #b58900;
+    font-weight: bold;
+}
+
+#status-container .good {
+    color: #859900;
+    font-weight: bold;
+}
+
+#bracket-code-container label {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#bracket-code {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* Use this to place it in the upper right corner of the viewport.
+#champ-points-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+*/
+
+#champ-points-container label {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#champ-points {
+    font-family: monospace;
+    font-size: 12px;
+}
