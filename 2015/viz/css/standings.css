@@ -67,9 +67,8 @@ h1 {
     font-style: italic;
 }
 
-.legend text {
+.legend-group text {
     font-family: arial, sans-serif;
-    fill: #586e75;
 }
 
 #legend-title {
