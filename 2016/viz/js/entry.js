@@ -69,16 +69,6 @@ var yScale = d3.scale.ordinal()
     .rangeBands([0, height], 0.1, 0)
 ;
 
-var regionColor = d3.scale.ordinal()
-    .range([
-        "#6c71c4",
-        "#b58900",
-        "#2aa198",
-        "#d33682"
-    ])
-;
-
-
 // Create a function for drawing the connectors between team boxes. Use an SVG
 // Path to draw a series of lines:
 //
@@ -393,7 +383,6 @@ d3.json("data/entry.json", function(error, inputBracket) {
 
     xScale.domain(d3.range(1, numRounds + 1));
     yScale.domain(d3.range(1, teams.length + 1));
-    regionColor.domain(d3.keys(regions));
 
     svg.selectAll(".link")
         .data(flatBracket)
@@ -466,27 +455,16 @@ d3.json("data/entry.json", function(error, inputBracket) {
     teamBoxes
         .filter(function(d) { return d.children === null; })
         .append("rect")
+        .classed('team-swatch', true)
+        .classed('region-1', function(d) { return d.region === 1; })   
+        .classed('region-2', function(d) { return d.region === 2; })
+        .classed('region-3', function(d) { return d.region === 3; })
+        .classed('region-4', function(d) { return d.region === 4; })
+        .classed('team-even', function(d, i) { return i % 2 == 0; })
+        .classed('pair-even', function(d, i) { return Math.floor(i/2) % 2 == 0; })
         .attr("x", -10)
         .attr("width", 8)
         .attr("height", function(d) { return d.value * yScale.rangeBand(); })
-        .attr("fill", function(d, i) {
-            // Color the boxes based on the region. Use this method to give all
-            // the boxes in the region a uniform color:
-            //
-            //     return regionColor(d.region);
-            //
-            // Use this method to alternate between the assigned color and a
-            // lighter version:
-            //
-            //     if (i % 2 === 0) return regionColor(d.region);
-            //     else return d3.rgb(regionColor(d.region)).brighter();
-            //
-            // Use this method to alternate between the assigned color and a
-            // lighter version for every pair of teams:
-            //
-            if (Math.floor(i/2) % 2 === 0) return regionColor(d.region);
-            else return d3.rgb(regionColor(d.region)).brighter();
-        })
     ;
 
     teamBoxes

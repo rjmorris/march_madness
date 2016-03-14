@@ -1,36 +1,10 @@
-/*
-Using colors from the Solarized palette.
--- background tones --
-$base03:    #002b36;
-$base02:    #073642;
--- content tones --
-$base01:    #586e75;
-$base00:    #657b83;
-$base0:     #839496;
-$base1:     #93a1a1;
--- background tones --
-$base2:     #eee8d5;
-$base3:     #fdf6e3;
--- accent colors --
-$yellow:    #b58900;
-$orange:    #cb4b16;
-$red:       #dc322f;
-$magenta:   #d33682;
-$violet:    #6c71c4;
-$blue:      #268bd2;
-$cyan:      #2aa198;
-$green:     #859900;
-*/
-
 body {
     margin: 10px;
-    background-color: #eee8d5;
+    background-color: #f0f0f0;
 }
 
 .team-rect {
-    /* stroke: #002b36; */
-    /* stroke-width: 1px; */
-    fill: #fdf6e3;
+    fill: #ffffff;
     shape-rendering: crispEdges;
     cursor: pointer;
 }
@@ -47,16 +21,16 @@ body {
 .team-text {
     font-family: arial, sans-serif;
     font-size: 10px;
-    fill: #073642;
+    fill: #000000;
     pointer-events: none;
 }
 
 .pending .team-text {
-    fill: #93a1a1;
+    fill: #888888;
 }
 
 .link {
-    stroke: #93a1a1;
+    stroke: #888888;
     stroke-width: 1px;
     fill: none;
 }
@@ -101,15 +75,6 @@ body {
     font-size: 12px;
 }
 
-/* Use this to place it in the upper right corner of the viewport.
-#champ-points-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 10px;
-}
-*/
-
 #champ-points-container label {
     font-family: sans-serif;
     font-size: 12px;
@@ -118,4 +83,36 @@ body {
 #champ-points {
     font-family: monospace;
     font-size: 12px;
+}
+
+.team-swatch.region-1.pair-even {
+    fill: #0051ba;
+}
+
+.team-swatch.region-1 {
+    fill: #58a1ff;
+}
+
+.team-swatch.region-2.pair-even {
+    fill: #154733;
+}
+
+.team-swatch.region-2 {
+    fill: #34b17f;
+}
+
+.team-swatch.region-3.pair-even {
+    fill: #7bafd4;
+}
+
+.team-swatch.region-3 {
+    fill: #c5dcec;
+}
+
+.team-swatch.region-4.pair-even {
+    fill: #f36f21;
+}
+
+.team-swatch.region-4 {
+    fill: #fac3a3;
 }
