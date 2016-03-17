@@ -1,0 +1,88 @@
+body {
+    margin: 10px;
+    background-color: #e4e4e4;
+}
+
+#header {
+    font-family: arial, sans-serif;
+    font-size: 12px;
+}
+
+#header p {
+    margin: 0px;
+    padding: 0px;
+}
+
+#player-name {
+    font-size: 14px;
+}
+
+.team-rect {
+    fill: #ffffff;
+    shape-rendering: crispEdges;
+    cursor: default;
+}
+
+.incomplete .team-rect {
+    stroke: #dc322f;
+}
+
+.team-text {
+    font-family: arial, sans-serif;
+    font-size: 10px;
+    fill: #073642;
+    pointer-events: none;
+}
+
+.right .team-text {
+    fill: #008800;
+    font-weight: bold;
+}
+
+.wrong .team-text {
+    fill: #aaaaaa;
+    text-decoration: line-through;
+}
+
+.link {
+    stroke: #93a1a1;
+    stroke-width: 1px;
+    fill: none;
+}
+
+#bracket-code {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.team-swatch.region-1.pair-even {
+    fill: #0051ba;
+}
+
+.team-swatch.region-1 {
+    fill: #58a1ff;
+}
+
+.team-swatch.region-2.pair-even {
+    fill: #154733;
+}
+
+.team-swatch.region-2 {
+    fill: #34b17f;
+}
+
+.team-swatch.region-3.pair-even {
+    fill: #7bafd4;
+}
+
+.team-swatch.region-3 {
+    fill: #c5dcec;
+}
+
+.team-swatch.region-4.pair-even {
+    fill: #f36f21;
+}
+
+.team-swatch.region-4 {
+    fill: #fac3a3;
+}
