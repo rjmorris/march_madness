@@ -5,7 +5,7 @@ var margin = {
     left: 110
 };
 var width = 950 - margin.left - margin.right;
-var height = 850 - margin.top - margin.bottom;
+var height = 820 - margin.top - margin.bottom;
 
 var roundLabelsPlayed = [
     'Round of 32',
@@ -105,7 +105,7 @@ var x = d3.scale.linear()
 ;
 
 var y = d3.scale.ordinal()
-    .rangeRoundBands([height, 0], .4)
+    .rangeRoundBands([height, 0], .4, 0)
 ;
 
 var xAxisTop = d3.svg.axis()
